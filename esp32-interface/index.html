@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Commande ESP32 à distance</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 40px;
+    }
+    button {
+      margin: 10px;
+      padding: 15px 25px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Smart Farming ESP32 - Commande à distance</h2>
+  <button onclick="sendCmd('pompe','ON')">🚿 Activer Pompe</button>
+  <button onclick="sendCmd('pompe','OFF')">🛑 Désactiver Pompe</button><br><br>
+  <button onclick="sendCmd('buzzer','ON')">🔔 Activer Buzzer</button>
+  <button onclick="sendCmd('buzzer','OFF')">🔕 Désactiver Buzzer</button>
+
+  <script>
+    async function sendCmd(component, value) {
+      const response = await fetch('https://esp32-api-verceles.vercel.app/api/commandes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ [component]: value })
+      });
+      const result = await response.json();
+      alert("✅ Commande envoyée : " + JSON.stringify(result.state));
+    }
+  </script>
+</body>
+</html>
